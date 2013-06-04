@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HourlyViewController : UIViewController
+@interface HourlyViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, strong) UITableView *tableView;
 
 @end

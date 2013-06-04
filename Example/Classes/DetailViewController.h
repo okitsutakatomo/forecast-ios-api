@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ForecastData.h"
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, strong) UITableView* tableView;
+
+- (id)initWithForecastData:(ForecastData*)data;
 
 @end

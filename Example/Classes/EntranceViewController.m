@@ -7,6 +7,9 @@
 //
 
 #import "EntranceViewController.h"
+#import "DetailViewController.h"
+#import "DailyViewController.h"
+#import "HourlyViewController.h"
 
 @interface EntranceViewController ()
 {
@@ -66,11 +69,14 @@ NSString * const kHOURLYDATALABEL = @"Hourly";
     UITableViewCell* selectedCell = [self.tableView cellForRowAtIndexPath:indexPath];
     NSString *label = selectedCell.textLabel.text;
     if ([label isEqualToString:kCURRENTDATALABEL]) {
-        
-    } else if ([label isEqualToString:kCURRENTDATALABEL]) {
-        
+        DetailViewController *controller = [[DetailViewController alloc] init];
+        [self.navigationController pushViewController:controller animated:YES];
     } else if ([label isEqualToString:kDAILYDATALABEL]) {
-        
+        DailyViewController *controller = [[DailyViewController alloc] init];
+        [self.navigationController pushViewController:controller animated:YES];
+    } else if ([label isEqualToString:kHOURLYDATALABEL]) {
+        HourlyViewController *controller = [[HourlyViewController alloc] init];
+        [self.navigationController pushViewController:controller animated:YES];
     }
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];

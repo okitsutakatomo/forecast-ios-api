@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DailyViewController : UIViewController
+@interface DailyViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, strong) UITableView *tableView;
 
 @end

@@ -7,97 +7,28 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 
-@interface Forecast : NSObject
+typedef enum {
+    FCOrderTypeCurrentry,
+    FCOrderTypeDaily,
+    FCOrderTypeHourly,
+} FCOrderType;
 
+#define FORECAST_BASE_URL @"https://api.forecast.io/forecast"
 
-+(void)setAPIKey:(NSString*)apiKey;
+#define FORECAST_US_UNITS @"us"
+#define FORECAST_CS_UNITS @"si"
+#define FORECAST_UK_UNITS @"uk"
+#define FORECAST_CA_UNITS @"ca"
 
--(void)getCurrentDataForCurrentLocation:
-                                success:(void (^)(NSMutableDictionary *responseDict))success
-                                failure:(void (^)(NSError *error))failure;
+@interface Forecast : NSObject <CLLocationManagerDelegate>
 
--(void)getDailyDataForCurrentLocation:
-                              success:(void (^)(NSMutableDictionary *responseDict))success
-                              failure:(void (^)(NSError *error))failure;
+@property (nonatomic, strong) NSString* apiKey;
+@property (nonatomic, strong) CLLocationManager* locationManager;
+@property (nonatomic, strong) CLLocation* currentLocation;
 
--(void)getHourlyDataForCurrentLocation:
-                               success:(void (^)(NSMutableArray *responseArray))success
-                               failure:(void (^)(NSError *error))failure;
-
-/**
- * Request the current conditions for the give location for the next week.
- *
- * @param lat The latitude of the location.
- * @param long The longitude of the location.
- * @param success A block object to be executed when the operation finishes successfully.
- * @param failure A block object to be executed when the operation finishes unsuccessfully.
- */
--(void)getCurrentConditionsForLatitude:(double)lat
-                             longitude:(double)lon
-                               success:(void (^)(NSMutableDictionary *responseDict))success
-                               failure:(void (^)(NSError *error))failure;
-
-/**
- * Request the daily forecast for the specified location for the next week.
- *
- * @param lat The latitude of the location.
- * @param long The longitude of the location.
- * @param success A block object to be executed when the operation finishes successfully.
- * @param failure A block object to be executed when the operation finishes unsuccessfully.
- */
--(void)getDailyForcastForLatitude:(double)lat
-                        longitude:(double)lon
-                          success:(void (^)(NSMutableArray *responseArray))success
-                          failure:(void (^)(NSError *error))failure;
-
-/**
- * Request the hourly forecast for the specified location for the next week.
- *
- * @param lat The latitude of the location.
- * @param long The longitude of the location.
- * @param success A block object to be executed when the operation finishes successfully.
- * @param failure A block object to be executed when the operation finishes unsuccessfully.
- */
--(void)getHourlyForcastForLatitude:(double)lat
-                         longitude:(double)lon
-                           success:(void (^)(NSMutableArray *responseArray))success
-                           failure:(void (^)(NSError *error))failure;
-
-
-/**
- * Request the daily forecast for the give location and time
- *
- * @param lat The latitude of the location.
- * @param long The longitude of the location.
- * @param time The desired time of the forecast
- * @param success A block object to be executed when the operation finishes successfully.
- * @param failure A block object to be executed when the operation finishes unsuccessfully.
- *
- * @discussion for many locations, it can be 60 years in the past to 10 years in the future.
- */
--(void)getDailyForcastForLatitude:(double)lat
-                        longitude:(double)lon
-                             time:(NSTimeInterval)time
-                          success:(void (^)(NSMutableArray *responseArray))success
-                          failure:(void (^)(NSError *error))failure;
-
-
-/**
- * Request the hourly forecast for the give location and time
- *
- * @param lat The latitude of the location.
- * @param long The longitude of the location.
- * @param time The desired time of the forecast
- * @param success A block object to be executed when the operation finishes successfully.
- * @param failure A block object to be executed when the operation finishes unsuccessfully.
- *
- * @discussion for many locations, it can be 60 years in the past to 10 years in the future.
- */
--(void)getHourlyForcastForLatitude:(double)lat
-                         longitude:(double)lon
-                              time:(NSTimeInterval)time
-                           success:(void (^)(NSMutableArray *responseArray))success
-                           failure:(void (^)(NSError *error))failure;
++ (Forecast*)sharedInstance;
+-(void)initializeWithApiKey:(NSString*)apiKey;
 
 @end

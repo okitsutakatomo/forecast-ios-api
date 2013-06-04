@@ -14,8 +14,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-    [Forecast setAPIKey:@"1a830004f9dd915bd5cae948a563ba85"];
+    [[Forecast sharedInstance] initializeWithApiKey:@"1a830004f9dd915bd5cae948a563ba85"];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
