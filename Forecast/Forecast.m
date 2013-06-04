@@ -7,6 +7,7 @@
 //
 
 #import "Forecast.h"
+#import "AFJSONRequestOperation.h"
 
 @interface Forecast()
 
