@@ -1,30 +1,43 @@
 //
-//  EntranceViewController.m
+//  SelectBlockViewController.h
 //  forecast-ios-api-example
 //
 //  Created by Takatomo Okitsu on 2013/06/04.
 //  Copyright (c) 2013年 Takatomo Okitsu. All rights reserved.
 //
 
-#import "EntranceViewController.h"
+#import "SelectBlockViewController.h"
 #import "DetailViewController.h"
 #import "DailyViewController.h"
 #import "HourlyViewController.h"
+#import "ForecastApi.h"
 
-@interface EntranceViewController ()
+@interface SelectBlockViewController ()
 {
-    NSMutableArray *dataSource;
+    NSMutableArray *_dataSource;
+    NSString *_address;
 }
 
 @end
 
-@implementation EntranceViewController
+@implementation SelectBlockViewController
 
 @synthesize tableView;
 
-NSString * const kCURRENTDATALABEL = @"Current";
+NSString * const kCURRENTDATALABEL = @"Currently (Now)";
 NSString * const kDAILYDATALABEL = @"Daily";
 NSString * const kHOURLYDATALABEL = @"Hourly";
+
+- (id)initWithAddress:(NSString*)address
+{
+    self = [super init];
+    if(self) {
+        _address = address;
+        self.title = _address;
+    }
+    return self;
+    
+}
 
 - (void)viewDidLoad
 {
@@ -33,13 +46,16 @@ NSString * const kHOURLYDATALABEL = @"Hourly";
     self.tableView = [[UITableView alloc] initWithFrame:[self.view bounds]];
     [self.view addSubview:self.tableView];
     
-    dataSource = [NSMutableArray array];
-    dataSource = [@[kCURRENTDATALABEL, kDAILYDATALABEL, kHOURLYDATALABEL] mutableCopy];;
+    _dataSource = [NSMutableArray array];
+    _dataSource = [@[kCURRENTDATALABEL, kDAILYDATALABEL, kHOURLYDATALABEL] mutableCopy];;
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    
+    if(!_address) {
+        self.title = [[Forecast sharedInstance] currentLocationString];
+    }
 }
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -49,9 +65,8 @@ NSString * const kHOURLYDATALABEL = @"Hourly";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [dataSource count];
+    return [_dataSource count];
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -59,7 +74,7 @@ NSString * const kHOURLYDATALABEL = @"Hourly";
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
     }
-    cell.textLabel.text = [dataSource objectAtIndex:indexPath.row];
+    cell.textLabel.text = [_dataSource objectAtIndex:indexPath.row];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
@@ -68,16 +83,28 @@ NSString * const kHOURLYDATALABEL = @"Hourly";
 {
     UITableViewCell* selectedCell = [self.tableView cellForRowAtIndexPath:indexPath];
     NSString *label = selectedCell.textLabel.text;
+    UIViewController *controller;
     if ([label isEqualToString:kCURRENTDATALABEL]) {
-        DetailViewController *controller = [[DetailViewController alloc] init];
-        [self.navigationController pushViewController:controller animated:YES];
+        if(_address) {
+            controller = [[DetailViewController alloc] initWithAddress:_address];
+        } else {
+            controller = [[DetailViewController alloc] init];
+        }
     } else if ([label isEqualToString:kDAILYDATALABEL]) {
-        DailyViewController *controller = [[DailyViewController alloc] init];
-        [self.navigationController pushViewController:controller animated:YES];
+        if(_address) {
+            controller = [[DailyViewController alloc] initWithAddress:_address];
+        } else {
+            controller = [[DailyViewController alloc] init];
+        }
     } else if ([label isEqualToString:kHOURLYDATALABEL]) {
-        HourlyViewController *controller = [[HourlyViewController alloc] init];
-        [self.navigationController pushViewController:controller animated:YES];
+        if(_address) {
+            controller = [[HourlyViewController alloc] initWithAddress:_address];
+        } else {
+            controller = [[HourlyViewController alloc] init];
+        }
     }
+    
+    [self.navigationController pushViewController:controller animated:YES];
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 }

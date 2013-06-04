@@ -55,7 +55,7 @@
  */
 -(void)getCurrentDataForLatitude:(double)lat
                        longitude:(double)lon
-                         success:(void (^)(NSMutableDictionary *responseDict))success
+                         success:(void (^)(ForecastData *data))success
                          failure:(void (^)(NSError *error))failure;
 
 /**
@@ -93,7 +93,7 @@
  * @param failure A block object to be executed when the operation finishes unsuccessfully.
  */
 -(void)getCurrentDataForAddress:(NSString*)address
-                        success:(void (^)(NSMutableDictionary *responseDict))success
+                        success:(void (^)(ForecastData *data))success
                         failure:(void (^)(NSError *error))failure;
     
 /**
@@ -105,9 +105,9 @@
  * @param failure A block object to be executed when the operation finishes unsuccessfully.
  */
 -(void)getDailyDataForAddress:(NSString*)address
-                      success:(void (^)(NSMutableDictionary *responseDict))success
+                      success:(void (^)(NSMutableArray *responseArray))success
                       failure:(void (^)(NSError *error))failure;
-    
+
 
 /**
  * Request the current conditions for the give location for the next week.
@@ -118,7 +118,7 @@
  * @param failure A block object to be executed when the operation finishes unsuccessfully.
  */
 -(void)getHourlyDataForAddress:(NSString*)address
-                       success:(void (^)(NSMutableDictionary *responseDict))success
+                       success:(void (^)(NSMutableArray *responseArray))success
                        failure:(void (^)(NSError *error))failure;
 
 /**
@@ -149,5 +149,9 @@
                   params:(NSDictionary*)params
                  success:(void (^)(id response))success
                  failure:(void (^)(NSError *error))failure;
+
+-(void)getLocationForAddress:(NSString*)address
+                     success:(void (^)(CLLocation *location))success
+                     failure:(void (^)(NSError *error))failure;
 
 @end

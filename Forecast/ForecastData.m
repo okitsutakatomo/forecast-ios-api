@@ -21,6 +21,7 @@
 @synthesize summary;
 @synthesize sunriseTime;
 @synthesize sunsetTime;
+@synthesize temperature;
 @synthesize temperatureMax;
 @synthesize temperatureMaxTime;
 @synthesize temperatureMin;
@@ -65,6 +66,9 @@
         }
         if ([data objectForKey:@"sunsetTime"]) {
             self.sunsetTime = [NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"sunsetTime"] doubleValue]];            
+        }
+        if ([data objectForKey:@"temperature"]) {
+            self.temperature = [[data objectForKey:@"temperature"] stringValue];
         }
         if ([data objectForKey:@"temperatureMax"]) {
             self.temperatureMax = [[data objectForKey:@"temperatureMax"] stringValue];            

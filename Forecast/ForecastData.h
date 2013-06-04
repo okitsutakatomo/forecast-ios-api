@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSString* summary;
 @property (nonatomic, strong) NSDate* sunriseTime;
 @property (nonatomic, strong) NSDate* sunsetTime;
+@property (nonatomic, strong) NSString* temperature;
 @property (nonatomic, strong) NSString* temperatureMax;
 @property (nonatomic, strong) NSDate* temperatureMaxTime;
 @property (nonatomic, strong) NSString* temperatureMin;

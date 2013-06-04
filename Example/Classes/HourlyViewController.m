@@ -15,6 +15,7 @@
 {
     NSMutableArray* _dataSource;
     UIActivityIndicatorView* _indicator;
+    NSString* _address;
 }
 
 @end
@@ -22,6 +23,14 @@
 @implementation HourlyViewController
 
 @synthesize tableView;
+
+- (id)initWithAddress:(NSString*)address {
+    self = [super init];
+    if (self) {
+        _address = address;
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -53,14 +62,28 @@
     [_indicator startAnimating];
     
     ForecastApi* api = [[ForecastApi alloc] init];
-    [api getHourlyDataForCurrentLocation:^(NSMutableArray *responseArray) {
-        _dataSource = [responseArray mutableCopy];
-        [self.tableView reloadData];
-        [_indicator stopAnimating];
-    } failure:^(NSError *error) {
-        NSLog(@"%@", error);
-        [_indicator stopAnimating];
-    }];
+    if(_address) {
+        self.title = _address;
+        [api getHourlyDataForAddress:_address
+                            success:^(NSMutableArray *responseArray) {
+                                _dataSource = [responseArray mutableCopy];
+                                [self.tableView reloadData];
+                                [_indicator stopAnimating];
+                            } failure:^(NSError *error) {
+                                NSLog(@"%@", error);
+                                [_indicator stopAnimating];
+                            }];
+    } else {
+        self.title = @"Current location";
+        [api getHourlyDataForCurrentLocation:^(NSMutableArray *responseArray) {
+            _dataSource = [responseArray mutableCopy];
+            [self.tableView reloadData];
+            [_indicator stopAnimating];
+        } failure:^(NSError *error) {
+            NSLog(@"%@", error);
+            [_indicator stopAnimating];
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning

@@ -18,6 +18,7 @@
 @synthesize apiKey;
 @synthesize locationManager;
 @synthesize currentLocation;
+@synthesize currentLocationString;
 
 + (Forecast*)sharedInstance {
     static Forecast* _instance = nil;
@@ -49,10 +50,23 @@
     self.apiKey = key;
 }
 
-
 // -- delegate
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     self.currentLocation = newLocation;
+    
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:currentLocation.coordinate.latitude
+                                                      longitude:currentLocation.coordinate.longitude];
+    
+    [geocoder reverseGeocodeLocation:location
+                   completionHandler:^(NSArray* placemarks, NSError* error) {
+                       NSLog(@"found : %d", [placemarks count]);
+                       
+                       if([placemarks count] > 0) {
+                           CLPlacemark* placemark = placemarks[0];
+                           self.currentLocationString = [NSString stringWithFormat:@"%@, %@", placemark.administrativeArea, placemark.country];
+                       }
+                   }];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {

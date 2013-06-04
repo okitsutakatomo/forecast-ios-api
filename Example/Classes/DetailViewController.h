@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) UITableView* tableView;
 
+- (id)initWithAddress:(NSString*)address;
 - (id)initWithForecastData:(ForecastData*)data;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  EntranceViewController.h
+//  SelectBlockViewController.h
 //  forecast-ios-api-example
 //
 //  Created by Takatomo Okitsu on 2013/06/04.
@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EntranceViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SelectBlockViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
+
+- (id)initWithAddress:(NSString*)address;
 
 @end

@@ -61,7 +61,7 @@
 
 -(void)getCurrentDataForLatitude:(double)lat
                              longitude:(double)lon
-                               success:(void (^)(NSMutableDictionary *responseDict))success
+                               success:(void (^)(ForecastData *data))success
                                failure:(void (^)(NSError *error))failure {
     
     [self getDataForLatitude:lat
@@ -100,7 +100,7 @@
 
 
 -(void)getCurrentDataForAddress:(NSString*)address
-                        success:(void (^)(NSMutableDictionary *responseDict))success
+                        success:(void (^)(ForecastData *data))success
                         failure:(void (^)(NSError *error))failure {
     
     [self getDataForAddress:address
@@ -111,7 +111,7 @@
 }
 
 -(void)getDailyDataForAddress:(NSString*)address
-                        success:(void (^)(NSMutableDictionary *responseDict))success
+                        success:(void (^)(NSMutableArray *responseArray))success
                         failure:(void (^)(NSError *error))failure {
     
     [self getDataForAddress:address
@@ -122,7 +122,7 @@
 }
 
 -(void)getHourlyDataForAddress:(NSString*)address
-                        success:(void (^)(NSMutableDictionary *responseDict))success
+                        success:(void (^)(NSMutableArray *responseArray))success
                         failure:(void (^)(NSError *error))failure {
     
     [self getDataForAddress:address
@@ -177,29 +177,48 @@
                     success:(void (^)(id response))success
                     failure:(void (^)(NSError *error))failure {
     
+    [self getLocationForAddress:address success:^(CLLocation *location) {
+        if (type == FCOrderTypeDaily) {
+            [self getDailyDataForLatitude:location.coordinate.latitude
+                                longitude:location.coordinate.longitude
+                                  success:^(NSMutableArray *responseArray) {
+                                      success(responseArray);
+                                  } failure:^(NSError *error) {
+                                      failure(error);
+                                  }];
+        } else if (type == FCOrderTypeHourly) {
+            [self getHourlyDataForLatitude:location.coordinate.latitude
+                                 longitude:location.coordinate.longitude
+                                   success:^(NSMutableArray *responseArray) {
+                                       success(responseArray);
+                                   } failure:^(NSError *error) {
+                                       failure(error);
+                                   }];
+        } else if (type == FCOrderTypeCurrentry) {
+            [self getCurrentDataForLatitude:location.coordinate.latitude
+                                  longitude:location.coordinate.longitude
+                                    success:^(ForecastData *data) {
+                                        success(data);
+                                    } failure:^(NSError *error) {
+                                        failure(error);
+                                    }];
+        }
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(void)getLocationForAddress:(NSString*)address
+                     success:(void (^)(CLLocation *location))success
+                     failure:(void (^)(NSError *error))failure {
+    
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder geocodeAddressString:address
                  completionHandler:^(NSArray* placemarks, NSError* error) {
                      NSLog(@"found : %d", [placemarks count]);
                      if ([placemarks count] > 0) {
                          CLPlacemark* placemark = [placemarks objectAtIndex:0];
-                         if (type == FCOrderTypeDaily) {
-                             [self getDailyDataForLatitude:placemark.location.coordinate.latitude
-                                                    longitude:placemark.location.coordinate.longitude
-                                                      success:^(NSMutableArray *responseArray) {
-                                                          success(responseArray);
-                                                      } failure:^(NSError *error) {
-                                                          failure(error);
-                                                      }];
-                         } else if (type == FCOrderTypeHourly) {
-                             [self getHourlyDataForLatitude:placemark.location.coordinate.latitude
-                                                    longitude:placemark.location.coordinate.longitude
-                                                      success:^(NSMutableArray *responseArray) {
-                                                          success(responseArray);
-                                                      } failure:^(NSError *error) {
-                                                          failure(error);
-                                                      }];
-                         }
+                         success(placemark.location);
                      } else {
                          NSMutableDictionary* errDetails = [NSMutableDictionary dictionary];
                          [errDetails setValue:[NSString stringWithFormat:@"address not found: %@", address] forKey:NSLocalizedDescriptionKey];

@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "EntranceViewController.h"
+#import "TopViewController.h"
 #import "Forecast.h"
 
 @implementation AppDelegate
@@ -19,7 +19,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[EntranceViewController alloc] init]];
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[TopViewController alloc] init]];
     [self.window makeKeyAndVisible];
     return YES;
 }

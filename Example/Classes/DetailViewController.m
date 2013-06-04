@@ -14,11 +14,21 @@
 {
     ForecastData* _data;
     NSArray* _dataSource;
+    NSString* _address;
     UIActivityIndicatorView* _indicator;
 }
 @end
 
 @implementation DetailViewController
+
+- (id)initWithAddress:(NSString*)address
+{
+    self = [super init];
+    if(self) {
+        _address = address;
+    }
+    return self;
+}
 
 - (id)initWithForecastData:(ForecastData*)data
 {
@@ -54,6 +64,7 @@
                     @"summary",
                     @"sunriseTimeString",
                     @"sunsetTimeString",
+                    @"temperature",
                     @"temperatureMax",
                     @"temperatureMaxTimeString",
                     @"temperatureMin",
@@ -65,25 +76,45 @@
                     @"windSpeed",
                     ];
     
-    if(!_data) {
-        [self loadCurrentlyData];
-    }
 }
 
-- (void)loadCurrentlyData
+- (void)viewWillAppear:(BOOL)animated
 {
-    [_indicator startAnimating];
+    [super viewWillAppear:animated];
     
-    ForecastApi* api = [[ForecastApi alloc] init];
-    [api getCurrentDataForCurrentLocation:^(ForecastData *data) {
-        _data = data;
-        [self.tableView reloadData];
-        [_indicator stopAnimating];
-    } failure:^(NSError *error) {
-        NSLog(@"%@", error);
-        [_indicator stopAnimating];
-    }];
+    [self loadData];    
+}
 
+- (void)loadData
+{
+    if(_data) {
+        return;
+    }
+    
+    [_indicator startAnimating];
+    ForecastApi* api = [[ForecastApi alloc] init];
+    
+    if(_address) {
+        self.title = _address;
+        [api getCurrentDataForAddress:_address success:^(ForecastData *data) {
+            _data = data;
+            [self.tableView reloadData];
+            [_indicator stopAnimating];
+        } failure:^(NSError *error) {
+            NSLog(@"%@", error);
+            [_indicator stopAnimating];
+        }];
+    } else {
+        self.title = @"Current location";
+        [api getCurrentDataForCurrentLocation:^(ForecastData *data) {
+            _data = data;
+            [self.tableView reloadData];
+            [_indicator stopAnimating];
+        } failure:^(NSError *error) {
+            NSLog(@"%@", error);
+            [_indicator stopAnimating];
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning
