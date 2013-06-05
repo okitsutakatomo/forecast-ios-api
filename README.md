@@ -48,9 +48,9 @@ fetch currently forecast data using Current location:
 {
     [super viewDidLoad];
 
-	ForecastApi* api = [[ForecastApi alloc] init];
+	ForecastApi* api = [ForecastApi sharedInstance];
 	[api getCurrentDataForCurrentLocation:^(ForecastData *data) {
-		NSLog(@"%d", data.temperature);
+		NSLog(@"%@", data.temperature);
 		NSLog(@"%@", data.icon);
 	} failure:^(NSError *error) {
 		NSLog(@"%@", error);
@@ -77,9 +77,9 @@ fetch currently forecast data using Address:
 {
     [super viewDidLoad];
 
-	ForecastApi* api = [[ForecastApi alloc] init];
+	ForecastApi* api = [ForecastApi sharedInstance];
 	[api getCurrentDataForAddress:@"yokohama, kanagawa" success:^(ForecastData *data) {
-		NSLog(@"%d", data.temperature);
+		NSLog(@"%@", data.temperature);
 		NSLog(@"%@", data.icon);
 	} failure:^(NSError *error) {
 		NSLog(@"%@", error);
@@ -110,7 +110,7 @@ fetch daily forecast data using current location:
 {
     [super viewDidLoad];
 
-	ForecastApi* api = [[ForecastApi alloc] init];
+	ForecastApi* api = [ForecastApi sharedInstance];
 	[api getDailyDataForCurrentLocation:^(NSMutableArray *responseArray) {
 		_dataSource = [responseArray mutableCopy];
 		[_tableView reloadData];
