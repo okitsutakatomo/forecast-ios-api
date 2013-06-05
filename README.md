@@ -31,6 +31,8 @@ And here is a very basic example:
 }
 ```
 
+fetch currently forecast data using Current location:
+
 ```objc
 #import "TopViewController.h"
 #import "Forecast.h"
@@ -50,6 +52,68 @@ And here is a very basic example:
 	[api getCurrentDataForCurrentLocation:^(ForecastData *data) {
 		NSLog(@"%d", data.temperature);
 		NSLog(@"%@", data.icon);
+	} failure:^(NSError *error) {
+		NSLog(@"%@", error);
+	}];
+}
+
+@end
+```
+
+fetch currently forecast data using Address:
+
+```objc
+#import "TopViewController.h"
+#import "Forecast.h"
+#import "ForecastApi.h"
+#import "ForecastData.h"
+
+@interface TopViewController ()
+@end
+
+@implementation TopViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+	ForecastApi* api = [[ForecastApi alloc] init];
+	[api getCurrentDataForAddress:@"yokohama, kanagawa" success:^(ForecastData *data) {
+		NSLog(@"%d", data.temperature);
+		NSLog(@"%@", data.icon);
+	} failure:^(NSError *error) {
+		NSLog(@"%@", error);
+	}];
+}
+
+@end
+```
+
+fetch daily forecast data using current location:
+
+```objc
+#import "TopViewController.h"
+#import "Forecast.h"
+#import "ForecastApi.h"
+#import "ForecastData.h"
+
+@interface TopViewController ()
+{
+	UITableView* _tableView;	
+	NSMutableArray* _dataSource;	
+}
+@end
+
+@implementation TopViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+	ForecastApi* api = [[ForecastApi alloc] init];
+	[api getDailyDataForCurrentLocation:^(NSMutableArray *responseArray) {
+		_dataSource = [responseArray mutableCopy];
+		[_tableView reloadData];
 	} failure:^(NSError *error) {
 		NSLog(@"%@", error);
 	}];
