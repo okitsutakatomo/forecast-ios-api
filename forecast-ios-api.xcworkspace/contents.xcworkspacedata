@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:Forecast"
+      name = "Forecast">
+      <FileRef
+         location = "group:Forecast.h">
+      </FileRef>
+      <FileRef
+         location = "group:Forecast.m">
+      </FileRef>
+   </Group>
+   <FileRef
+      location = "group:Example/forecast-ios-api-example.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:forecast-ios-api-tests/forecast-ios-api-tests.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+</Workspace>
