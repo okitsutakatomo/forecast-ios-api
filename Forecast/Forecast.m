@@ -54,14 +54,16 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     self.currentLocation = newLocation;
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:FORECAST_LOCAL_NOTIFICATION_UPDATE_CURRENT_LOCATION
+                                                        object:self
+                                                      userInfo:nil];
+    
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     CLLocation *location = [[CLLocation alloc] initWithLatitude:currentLocation.coordinate.latitude
                                                       longitude:currentLocation.coordinate.longitude];
     
     [geocoder reverseGeocodeLocation:location
                    completionHandler:^(NSArray* placemarks, NSError* error) {
-                       NSLog(@"found : %d", [placemarks count]);
-                       
                        if([placemarks count] > 0) {
                            CLPlacemark* placemark = placemarks[0];
                            self.currentLocationString = [NSString stringWithFormat:@"%@, %@", placemark.administrativeArea, placemark.country];
@@ -70,8 +72,18 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-	if (error) {
-        NSLog(@"failed to get location. %@", error.localizedDescription);
+    if (error) {
+		switch ([error code]) {
+			case kCLErrorDenied:
+				[self.locationManager stopUpdatingLocation];
+                [[NSNotificationCenter defaultCenter] postNotificationName:FORECAST_LOCAL_NOTIFICATION_DENIED_CURRENT_LOCATION
+                                                                    object:self
+                                                                  userInfo:nil];
+				break;
+			default:
+                NSLog(@"failed to get location. %@", error.localizedDescription);
+				break;
+		}
 	}
 }
 

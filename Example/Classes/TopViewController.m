@@ -54,6 +54,14 @@ NSString * const kRIO_LABEL = @"Rio de janeiro, Brazil";
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+
+    // dummy request
+    ForecastApi* api = [ForecastApi sharedInstance];
+    [api getCurrentDataForCurrentLocation:^(ForecastData *data) {
+        NSLog(@"%@", data.temperature);
+    } failure:^(NSError *error) {
+        NSLog(@"%@", error);
+    }];
 }
 
 - (void)didReceiveMemoryWarning

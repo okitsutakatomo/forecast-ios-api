@@ -92,7 +92,7 @@
     }
     
     [_indicator startAnimating];
-    ForecastApi* api = [[ForecastApi alloc] init];
+    ForecastApi* api = [ForecastApi sharedInstance];
     
     if(_address) {
         self.title = _address;

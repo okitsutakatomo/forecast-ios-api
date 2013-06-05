@@ -12,6 +12,9 @@
 
 @interface ForecastApi : NSObject
 
+
++ (ForecastApi*)sharedInstance;
+
 /**
  * Request the current conditions for the give location for the next week.
  *

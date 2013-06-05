@@ -22,6 +22,9 @@ typedef enum {
 #define FORECAST_UK_UNITS @"uk"
 #define FORECAST_CA_UNITS @"ca"
 
+#define FORECAST_LOCAL_NOTIFICATION_UPDATE_CURRENT_LOCATION @"forecast.local.notification.update.current.location"
+#define FORECAST_LOCAL_NOTIFICATION_DENIED_CURRENT_LOCATION @"forecast.local.notification.denied.current.location"
+
 @interface Forecast : NSObject <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) NSString* apiKey;
