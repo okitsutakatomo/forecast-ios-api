@@ -6,6 +6,20 @@
 //  Copyright (c) 2013年 Takatomo Okitsu. All rights reserved.
 //
 
+#define FORECAST_ICON_CLEARDAY = @"clear-day"
+#define FORECAST_ICON_CLEARNIGHT = @"clear-night"
+#define FORECAST_ICON_RAIN = @"rain"
+#define FORECAST_ICON_SNOW = @"snow"
+#define FORECAST_ICON_SLEET = @"sleet"
+#define FORECAST_ICON_WIND = @"wind"
+#define FORECAST_ICON_FOG = @"fog"
+#define FORECAST_ICON_CLOUDY = @"cloudy"
+#define FORECAST_ICON_PARTLYCLOUDYDAY = @"partly-cloudy-day"
+#define FORECAST_ICON_PARTLYCLOUDYNIGHT = @"partly-cloudy-night"
+#define FORECAST_ICON_HAIL = @"hail"
+#define FORECAST_ICON_THUNDERSTORM = @"thunderstorm"
+#define FORECAST_ICON_TORNADO = @"tornado"
+
 #import <Foundation/Foundation.h>
 
 @interface ForecastData : NSObject
