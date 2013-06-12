@@ -78,15 +78,15 @@
         failure([self makefailureCurrentLocationError]);
         return;
     }
-    
-    CLLocation *location = [[Forecast sharedInstance] currentLocation];
-    
+
     void (^block)() = ^{
         
         if(deniedLocation) {
             failure([self makefailureCurrentLocationError]);
             return;
         }
+        
+        CLLocation *location = [[Forecast sharedInstance] currentLocation];
         
         [self getDataForLatitude:location.coordinate.latitude
                        longitude:location.coordinate.longitude
@@ -96,6 +96,8 @@
                          failure:failure];
         
     };
+    
+    CLLocation *location = [[Forecast sharedInstance] currentLocation];
     
     if(location == nil && !deniedLocation){
         [_queues addObject:block];
