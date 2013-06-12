@@ -58,7 +58,19 @@ NSString * const kRIO_LABEL = @"Rio de janeiro, Brazil";
     // dummy request
     ForecastApi* api = [ForecastApi sharedInstance];
     [api getCurrentDataForCurrentLocation:^(ForecastData *data) {
-        NSLog(@"%@", data.temperature);
+        
+        if ([data.icon isEqualToString:FORECAST_ICON_CLEARDAY]) {
+            // 晴れの時
+            
+        } else if ([data.icon isEqualToString:FORECAST_ICON_RAIN]) {
+            // 雨の時
+            
+        } else if ([data.icon isEqualToString:FORECAST_ICON_CLOUDY]) {
+            // 曇りの時
+            
+        }
+
+//        NSLog(@"%@", data.temperature);
     } failure:^(NSError *error) {
         NSLog(@"%@", error);
     }];
