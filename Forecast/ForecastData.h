@@ -24,34 +24,42 @@
 
 @interface ForecastData : NSObject
 
-@property (nonatomic, strong) NSString* cloudCover;
-@property (nonatomic, strong) NSString* dewPoint;
-@property (nonatomic, strong) NSString* humidity;
-@property (nonatomic, strong) NSString* icon;
-@property (nonatomic, strong) NSString* ozone;
-@property (nonatomic, strong) NSString* precipIntensity;
-@property (nonatomic, strong) NSString* precipIntensityMax;
-@property (nonatomic, strong) NSString* pressure;
+//currently
+@property (nonatomic) float cloudCover;
+@property (nonatomic) float dewPoint;
+@property (nonatomic) float humidity;
+@property (nonatomic) NSString* icon;
+@property (nonatomic) float ozone;
+@property (nonatomic) float precipIntensity;
+@property (nonatomic) float precipProbability;
+@property (nonatomic) NSString* precipType;
+@property (nonatomic) float pressure;
 @property (nonatomic, strong) NSString* summary;
+@property (nonatomic) float temperature;
+@property (nonatomic, strong) NSDate* time;
+@property (nonatomic) float visibility;
+@property (nonatomic) int windBearing;
+@property (nonatomic) float windSpeed;
+
+//daily, hourly
+@property (nonatomic) float precipIntensityMax;
+@property (nonatomic, strong) NSDate* precipIntensityMaxTime;
 @property (nonatomic, strong) NSDate* sunriseTime;
 @property (nonatomic, strong) NSDate* sunsetTime;
-@property (nonatomic, strong) NSString* temperature;
-@property (nonatomic, strong) NSString* temperatureMax;
+@property (nonatomic) float temperatureMax;
 @property (nonatomic, strong) NSDate* temperatureMaxTime;
-@property (nonatomic, strong) NSString* temperatureMin;
+@property (nonatomic) float temperatureMin;
 @property (nonatomic, strong) NSDate* temperatureMinTime;
-@property (nonatomic, strong) NSDate* time;
-@property (nonatomic, strong) NSString* windBearing;
-@property (nonatomic, strong) NSString* windSpeed;
 
 -(id)initWithData:(NSDictionary*)data;
 
--(NSString*)sunriseTimeString;
--(NSString*)sunsetTimeString;
--(NSString*)temperatureMaxTimeString;
--(NSString*)temperatureMinTimeString;
--(NSString*)dateString;
--(NSString*)dateFullString;
--(NSString*)timeString;
+-(NSString*)displayPrecipIntensityMaxTime;
+-(NSString*)displaySunriseTime;
+-(NSString*)displaySunsetTime;
+-(NSString*)displayTemperatureMaxTime;
+-(NSString*)displayTemperatureMinTime;
+-(NSString*)displayTimeDate;
+-(NSString*)displayTimeFull;
+-(NSString*)displayTime;
 
 @end

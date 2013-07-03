@@ -19,6 +19,7 @@
 @synthesize locationManager;
 @synthesize currentLocation;
 @synthesize currentLocationString;
+@synthesize currentLocationPlacemark;
 
 + (Forecast*)sharedInstance {
     static Forecast* _instance = nil;
@@ -66,7 +67,8 @@
                    completionHandler:^(NSArray* placemarks, NSError* error) {
                        if([placemarks count] > 0) {
                            CLPlacemark* placemark = placemarks[0];
-                           self.currentLocationString = [NSString stringWithFormat:@"%@, %@", placemark.administrativeArea, placemark.country];
+                           self.currentLocationPlacemark = placemark;
+                           self.currentLocationString = [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea];
                        }
                    }];
 }

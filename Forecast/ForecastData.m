@@ -10,92 +10,120 @@
 
 @implementation ForecastData
 
+//currently
 @synthesize cloudCover;
 @synthesize dewPoint;
 @synthesize humidity;
 @synthesize icon;
 @synthesize ozone;
 @synthesize precipIntensity;
-@synthesize precipIntensityMax;
+@synthesize precipProbability;
+@synthesize precipType;
 @synthesize pressure;
 @synthesize summary;
+@synthesize temperature;
+@synthesize time;
+@synthesize visibility;
+@synthesize windBearing;
+@synthesize windSpeed;
+
+//daily, hourly
+@synthesize precipIntensityMax;
+@synthesize precipIntensityMaxTime;
 @synthesize sunriseTime;
 @synthesize sunsetTime;
-@synthesize temperature;
 @synthesize temperatureMax;
 @synthesize temperatureMaxTime;
 @synthesize temperatureMin;
 @synthesize temperatureMinTime;
-@synthesize time;
-@synthesize windBearing;
-@synthesize windSpeed;
 
 -(id)initWithData:(NSDictionary*)data
 {
     self = [super init];
     if (self != nil) {
         if ([data objectForKey:@"cloudCover"]){
-            self.cloudCover = [[data objectForKey:@"cloudCover"] stringValue];
+            self.cloudCover = [[data objectForKey:@"cloudCover"] floatValue];
         }
         if ([data objectForKey:@"dewPoint"]) {
-            self.dewPoint = [[data objectForKey:@"dewPoint"] stringValue];
+            self.dewPoint = [[data objectForKey:@"dewPoint"] floatValue];
         }
         if ([data objectForKey:@"humidity"]) {
-           self.humidity = [[data objectForKey:@"humidity"] stringValue];
+           self.humidity = [[data objectForKey:@"humidity"] floatValue];
         }
         if ([data objectForKey:@"icon"]) {
             self.icon = [data objectForKey:@"icon"];
         }
         if ([data objectForKey:@"ozone"]) {
-            self.ozone = [[data objectForKey:@"ozone"] stringValue];            
+            self.ozone = [[data objectForKey:@"ozone"] floatValue];
         }
         if ([data objectForKey:@"precipIntensity"]) {
-            self.precipIntensity = [[data objectForKey:@"precipIntensity"] stringValue];            
+            self.precipIntensity = [[data objectForKey:@"precipIntensity"] floatValue];
         }
-        if ([data objectForKey:@"precipIntensityMax"]) {
-            self.precipIntensityMax = [[data objectForKey:@"precipIntensityMax"] stringValue];
+        if ([data objectForKey:@"precipProbability"]) {
+            self.precipProbability = [[data objectForKey:@"precipProbability"] floatValue];
+        }
+        if ([data objectForKey:@"precipType"]) {
+            self.precipType = [data objectForKey:@"precipType"];
         }
         if ([data objectForKey:@"pressure"]) {
-            self.pressure = [[data objectForKey:@"pressure"] stringValue];            
+            self.pressure = [[data objectForKey:@"pressure"] floatValue];
         }
         if ([data objectForKey:@"summary"]) {
             self.summary = [data objectForKey:@"summary"];
+        }
+        if ([data objectForKey:@"temperature"]) {
+            self.temperature = [[data objectForKey:@"temperature"] floatValue];
+        }
+        if ([data objectForKey:@"time"]) {
+            self.time = [NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"time"] doubleValue]];
+        }
+        if ([data objectForKey:@"visibility"]) {
+            self.visibility = [[data objectForKey:@"visibility"] floatValue];
+        }
+        if ([data objectForKey:@"windBearing"]) {
+            self.windBearing = [[data objectForKey:@"windBearing"] intValue];
+        }
+        if ([data objectForKey:@"windSpeed"]) {
+            self.windSpeed = [[data objectForKey:@"windSpeed"] floatValue];
+        }
+        if ([data objectForKey:@"precipIntensityMax"]) {
+            self.precipIntensityMax = [[data objectForKey:@"precipIntensityMax"] floatValue];
+        }
+        if ([data objectForKey:@"precipIntensityMaxTime"]) {
+            self.precipIntensityMaxTime = [NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"precipIntensityMaxTime"] doubleValue]];
         }
         if ([data objectForKey:@"sunriseTime"]) {
             self.sunriseTime = [NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"sunriseTime"] doubleValue]];
         }
         if ([data objectForKey:@"sunsetTime"]) {
-            self.sunsetTime = [NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"sunsetTime"] doubleValue]];            
-        }
-        if ([data objectForKey:@"temperature"]) {
-            self.temperature = [[data objectForKey:@"temperature"] stringValue];
+            self.sunsetTime = [NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"sunsetTime"] doubleValue]];
         }
         if ([data objectForKey:@"temperatureMax"]) {
-            self.temperatureMax = [[data objectForKey:@"temperatureMax"] stringValue];            
+            self.temperatureMax = [[data objectForKey:@"temperatureMax"] floatValue];
         }
         if ([data objectForKey:@"temperatureMaxTime"]) {
             self.temperatureMaxTime = [NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"temperatureMaxTime"] doubleValue]];            
         }
         if ([data objectForKey:@"temperatureMin"]) {
-            self.temperatureMin = [[data objectForKey:@"temperatureMin"] stringValue];
+            self.temperatureMin = [[data objectForKey:@"temperatureMin"] floatValue];
         }
         if ([data objectForKey:@"temperatureMinTime"]) {
             self.temperatureMinTime = [NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"temperatureMinTime"] doubleValue]];
-        }
-        if ([data objectForKey:@"time"]) {
-            self.time = [NSDate dateWithTimeIntervalSince1970:[[data objectForKey:@"time"] doubleValue]];
-        }
-        if ([data objectForKey:@"windBearing"]) {
-            self.windBearing = [[data objectForKey:@"windBearing"] stringValue];            
-        }
-        if ([data objectForKey:@"windSpeed"]) {
-            self.windSpeed = [[data objectForKey:@"windSpeed"] stringValue];            
         }
     }
     return self;
 }
 
--(NSString*)sunriseTimeString
+-(NSString*)displayPrecipIntensityMaxTime
+{
+    if(self.precipIntensityMaxTime) {
+        return [self formatDateTime:self.precipIntensityMaxTime];
+    } else {
+        return nil;
+    }
+}
+
+-(NSString*)displaySunriseTime
 {
     if(self.sunriseTime) {
         return [self formatDateTime:self.sunriseTime];
@@ -104,16 +132,16 @@
     }
 }
 
--(NSString*)sunsetTimeString
+-(NSString*)displaySunsetTime
 {
     if(self.sunsetTime) {
         return [self formatDateTime:self.sunsetTime];
     } else {
         return nil;
-    }    
+    }
 }
 
--(NSString*)temperatureMaxTimeString
+-(NSString*)displayTemperatureMaxTime
 {
     if(self.temperatureMaxTime) {
         return [self formatDateTime:self.temperatureMaxTime];
@@ -122,7 +150,7 @@
     }    
 }
 
--(NSString*)temperatureMinTimeString
+-(NSString*)displayTemperatureMinTime
 {
     if(self.temperatureMinTime) {
         return [self formatDateTime:self.temperatureMinTime];
@@ -131,7 +159,7 @@
     }
 }
 
--(NSString*)dateString
+-(NSString*)displayTimeDate
 {
     if(self.time) {
         return [self formatDate:self.time];
@@ -140,7 +168,7 @@
     }    
 }
 
--(NSString*)dateFullString
+-(NSString*)displayTimeFull
 {
     if(self.time) {
         return [self formatDateFull:self.time];
@@ -149,7 +177,7 @@
     }
 }
 
--(NSString*)timeString
+-(NSString*)displayTime
 {
     if(self.time) {
         return [self formatDateTime:self.time];

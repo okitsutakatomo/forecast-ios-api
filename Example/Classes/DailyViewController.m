@@ -107,7 +107,7 @@
     }
     
     ForecastData *data = [_dataSource objectAtIndex:indexPath.row];
-    cell.textLabel.text = data.dateString;
+    cell.textLabel.text = data.displayTimeDate;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }

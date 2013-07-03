@@ -59,21 +59,25 @@
                     @"icon",
                     @"ozone",
                     @"precipIntensity",
-                    @"precipIntensityMax",
+                    @"precipProbability",
+                    @"precipType",
                     @"pressure",
                     @"summary",
-                    @"sunriseTimeString",
-                    @"sunsetTimeString",
                     @"temperature",
-                    @"temperatureMax",
-                    @"temperatureMaxTimeString",
-                    @"temperatureMin",
-                    @"temperatureMinTimeString",
-                    @"dateString",
-                    @"dateFullString",
-                    @"timeString",
+                    @"visibility",
                     @"windBearing",
                     @"windSpeed",
+                    @"precipIntensityMax",
+                    @"displayTimeDate",
+                    @"displayTimeFull",
+                    @"displayTime",
+                    @"displayPrecipIntensityMaxTime",
+                    @"displaySunriseTime",
+                    @"displaySunsetTime",
+                    @"temperatureMax",
+                    @"displayTemperatureMaxTime",
+                    @"temperatureMin",
+                    @"displayTemperatureMinTime",
                     ];
     
 }
@@ -138,15 +142,62 @@
     
     if(!_data) return cell;
     
-    NSString* methodName = [_dataSource objectAtIndex:indexPath.row];
-    SEL selector = NSSelectorFromString(methodName);
+    NSString* content = [_dataSource objectAtIndex:indexPath.row];
+    NSString* value;
     
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    NSString *value = [_data performSelector:selector];
-#pragma clang diagnostic pop
+    if ([content isEqualToString:@"cloudCover"]) {
+        value = [NSString stringWithFormat:@"%g", _data.cloudCover];
+    } else if ([content isEqualToString:@"dewPoint"]) {
+        value = [NSString stringWithFormat:@"%g", _data.dewPoint];
+    } else if ([content isEqualToString:@"humidity"]) {
+        value = [NSString stringWithFormat:@"%g", _data.humidity];
+    } else if ([content isEqualToString:@"icon"]) {
+        value = _data.icon;
+    } else if ([content isEqualToString:@"ozone"]) {
+        value = [NSString stringWithFormat:@"%g", _data.ozone];
+    } else if ([content isEqualToString:@"precipIntensity"]) {
+        value = [NSString stringWithFormat:@"%g", _data.precipIntensity];
+    } else if ([content isEqualToString:@"precipProbability"]) {
+        value = [NSString stringWithFormat:@"%g", _data.precipProbability];
+    } else if ([content isEqualToString:@"precipType"]) {
+        value = _data.precipType;
+    } else if ([content isEqualToString:@"pressure"]) {
+        value = [NSString stringWithFormat:@"%g", _data.pressure];
+    } else if ([content isEqualToString:@"summary"]) {
+        value = _data.summary;
+    } else if ([content isEqualToString:@"temperature"]) {
+        value = [NSString stringWithFormat:@"%g", _data.temperature];
+    } else if ([content isEqualToString:@"visibility"]) {
+        value = [NSString stringWithFormat:@"%g", _data.visibility];
+    } else if ([content isEqualToString:@"windBearing"]) {
+        value = [NSString stringWithFormat:@"%d", _data.windBearing];
+    } else if ([content isEqualToString:@"windSpeed"]) {
+        value = [NSString stringWithFormat:@"%g", _data.windSpeed];
+    } else if ([content isEqualToString:@"precipIntensityMax"]) {
+        value = [NSString stringWithFormat:@"%g", _data.precipIntensityMax];
+    } else if ([content isEqualToString:@"displayTimeDate"]) {
+        value = _data.displayTimeDate;
+    } else if ([content isEqualToString:@"displayTimeFull"]) {
+        value = _data.displayTimeFull;
+    } else if ([content isEqualToString:@"displayTime"]) {
+        value = _data.displayTime;
+    } else if ([content isEqualToString:@"displayPrecipIntensityMaxTime"]) {
+        value = _data.displayPrecipIntensityMaxTime;
+    } else if ([content isEqualToString:@"displaySunriseTime"]) {
+        value = _data.displaySunriseTime;
+    } else if ([content isEqualToString:@"displaySunsetTime"]) {
+        value = _data.displaySunsetTime;
+    } else if ([content isEqualToString:@"temperatureMax"]) {
+        value = [NSString stringWithFormat:@"%g", _data.temperatureMax];
+    } else if ([content isEqualToString:@"displayTemperatureMaxTime"]) {
+        value = _data.displayTemperatureMaxTime;
+    } else if ([content isEqualToString:@"temperatureMin"]) {
+        value = [NSString stringWithFormat:@"%g", _data.temperatureMin];
+    } else if ([content isEqualToString:@"displayTemperatureMinTime"]) {
+        value = _data.displayTemperatureMinTime;
+    }
     
-    cell.textLabel.text = methodName;
+    cell.textLabel.text = content;
     cell.detailTextLabel.text = value;
     return cell;
 }

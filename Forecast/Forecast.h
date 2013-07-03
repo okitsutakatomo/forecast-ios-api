@@ -31,6 +31,7 @@ typedef enum {
 @property (nonatomic, strong) CLLocationManager* locationManager;
 @property (nonatomic, strong) CLLocation* currentLocation;
 @property (nonatomic, strong) NSString* currentLocationString;
+@property (nonatomic, strong) CLPlacemark* currentLocationPlacemark;
 
 + (Forecast*)sharedInstance;
 -(void)initializeWithApiKey:(NSString*)apiKey;
